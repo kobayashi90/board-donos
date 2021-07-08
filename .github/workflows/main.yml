@@ -9,7 +9,6 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest    
     steps:
-    - uses: actions/checkout@master
     - name: Use Node.js
       uses: actions/setup-node@v1
       with:
@@ -20,9 +19,11 @@ jobs:
         npm run build
 
     - name: Deploy
-      uses: s0/git-publish-subdir-action@develop
+      - uses: s0/git-publish-subdir-action@develop
+      - uses: actions/checkout@v2
+      - uses: fregante/setup-git-user@v1
       env:
-        REPO: git@github.com:owner/repo.git
+        REPO: self
         BRANCH: gh-pages
         FOLDER: build
         SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
